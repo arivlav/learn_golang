@@ -1,1 +1,1 @@
-# learn_golang
+# learn golang syntax
