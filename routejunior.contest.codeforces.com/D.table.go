@@ -58,22 +58,36 @@ func main() {
 		fmt.Fscanln(in, &m)
 		table := make([][]int, n)
 		for i := 0; i < n; i++ {
+			table[i] = make([]int, m)
 			for j := 0; j < m; j++ {
-				table[i] = make([]int, m)
 				fmt.Fscan(in, &table[i][j])
 			}
+			fmt.Fscanln(in)
 		}
 		var countClick int
 		fmt.Fscanln(in, &countClick)
-		clicks := make([]int, MaxSize)
-		for i := 0; i < countClick; i++ {
-			fmt.Fscan(in, &clicks[i])
+		for k := 0; k < countClick; k++ {
+			var click int
+			fmt.Fscan(in, &click)
+			click--
+			for {
+				minKey := 0
+				for i := 1; i < m; i++ {
+					if table[minKey][click] > table[i][click] {
+						for j := 0; j < m; j++ {
+							swap := table[minKey][j]
+							table[minKey][j] = table[i][j]
+							table[i][j] = swap
+							minKey = i
+						}
+					}
+				}
+				if minKey == 0 {
+					break
+				}
+			}
 		}
-		fmt.Fprint(out, n)
-		fmt.Fprintln(out, m)
 		fmt.Fprintln(out, table)
-		fmt.Fprintln(out, countClick)
-		fmt.Fprintln(out, clicks)
 		fmt.Fprintln(out, "")
 	}
 }
