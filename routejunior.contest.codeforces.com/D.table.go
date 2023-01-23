@@ -51,7 +51,7 @@ func main() {
 	var setCount int
 	fmt.Fscanln(in, &setCount)
 
-	for i := 0; i < setCount; i++ {
+	for z := 0; z < setCount; z++ {
 		fmt.Fscanln(in)
 		var n, m int
 		fmt.Fscan(in, &n)
@@ -66,28 +66,27 @@ func main() {
 		}
 		var countClick int
 		fmt.Fscanln(in, &countClick)
-		for k := 0; k < countClick; k++ {
-			var click int
+		for cl := 0; cl < countClick; cl++ {
+			var click int = 1
 			fmt.Fscan(in, &click)
 			click--
-			for {
-				minKey := 0
-				for i := 1; i < m; i++ {
-					if table[minKey][click] > table[i][click] {
+			for k := 0; k < n; k++ {
+				for i := k; i < n; i++ {
+					if table[k][click] > table[i][click] {
 						for j := 0; j < m; j++ {
-							swap := table[minKey][j]
-							table[minKey][j] = table[i][j]
-							table[i][j] = swap
-							minKey = i
+							table[k][j], table[i][j] = table[i][j], table[k][j]
 						}
 					}
 				}
-				if minKey == 0 {
-					break
-				}
 			}
 		}
-		fmt.Fprintln(out, table)
-		fmt.Fprintln(out, "")
+		for i := 0; i < n; i++ {
+			for j := 0; j < m; j++ {
+				fmt.Fprintf(out, "%d ", table[i][j])
+			}
+			fmt.Fprintln(out)
+		}
+		fmt.Fprintln(out)
+		// fmt.Fprintln(out, "")
 	}
 }
