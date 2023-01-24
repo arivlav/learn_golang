@@ -67,14 +67,14 @@ func main() {
 		var countClick int
 		fmt.Fscanln(in, &countClick)
 		for cl := 0; cl < countClick; cl++ {
-			var click int = 1
+			var click int
 			fmt.Fscan(in, &click)
 			click--
-			for k := 0; k < n; k++ {
-				for i := k; i < n; i++ {
-					if table[k][click] > table[i][click] {
+			for k := 0; k < n-1; k++ {
+				for i := k + 1; i > 0; i-- {
+					if table[i][click] < table[i-1][click] {
 						for j := 0; j < m; j++ {
-							table[k][j], table[i][j] = table[i][j], table[k][j]
+							table[i][j], table[i-1][j] = table[i-1][j], table[i][j]
 						}
 					}
 				}
@@ -87,6 +87,6 @@ func main() {
 			fmt.Fprintln(out)
 		}
 		fmt.Fprintln(out)
-		// fmt.Fprintln(out, "")
 	}
+	fmt.Fprintln(out)
 }
