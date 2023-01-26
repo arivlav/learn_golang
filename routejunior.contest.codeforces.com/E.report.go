@@ -43,10 +43,25 @@ func main() {
 	for z := 0; z < setCount; z++ {
 		var n int
 		fmt.Fscan(in, &n)
-		days := make([][]int, n)
+		days := make(map[int]int)
+		prev, current := 0, 0
+		result := "YES"
 		for i := 0; i < n; i++ {
-			fmt.Fscan(in, &days[i])
+			fmt.Fscan(in, &current)
+			if prev != current {
+				_, ok := days[current]
+				if !ok {
+					days[current] = 1
+				} else {
+					days[current]++
+				}
+			}
+			if days[current] > 1 {
+				result = "NO"
+			}
+			prev = current
 		}
+		fmt.Fprintln(out, result)
 		fmt.Fscanln(in)
 	}
 	fmt.Fprintln(out)
