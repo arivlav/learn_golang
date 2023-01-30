@@ -32,10 +32,12 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
+	"time"
 )
 
 const (
-	MaxSize = 30
+	layotTime = "15:04:05"
 )
 
 func main() {
@@ -49,26 +51,21 @@ func main() {
 	for z := 0; z < setCount; z++ {
 		var n int
 		fmt.Fscan(in, &n)
-		days := make(map[int]int)
-		prev, current := 0, 0
 		result := "YES"
 		for i := 0; i < n; i++ {
-			fmt.Fscan(in, &current)
-			if prev != current {
-				_, ok := days[current]
-				if !ok {
-					days[current] = 1
-				} else {
-					days[current]++
-				}
-			}
-			if days[current] > 1 {
+			var str string
+			fmt.Fscan(in, &str)
+			strSplit := strings.Split(str, "-")
+			start, errStart := time.Parse(layotTime, strSplit[0])
+			end, errEnd := time.Parse(layotTime, strSplit[1])
+			if errStart == nil && errEnd == nil && (end.Equal(start) || end.After(start)) {
+				fmt.Fprintln(out)
+				// fmt.Fprintln(out, end.String())
+			} else {
 				result = "NO"
 			}
-			prev = current
 		}
 		fmt.Fprintln(out, result)
-		fmt.Fscanln(in)
 	}
 	fmt.Fprintln(out)
 }
