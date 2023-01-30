@@ -37,7 +37,9 @@ import (
 )
 
 const (
-	layotTime = "15:04:05"
+	LAUOT_TIME = "15:04:05"
+	YES        = "YES"
+	NO         = "NO"
 )
 
 func main() {
@@ -51,20 +53,24 @@ func main() {
 	for z := 0; z < setCount; z++ {
 		var n int
 		fmt.Fscan(in, &n)
-		result := "YES"
+		result := YES
+		timeIntervals := make([][]int, n, n)
 		for i := 0; i < n; i++ {
 			var str string
 			fmt.Fscan(in, &str)
 			strSplit := strings.Split(str, "-")
-			start, errStart := time.Parse(layotTime, strSplit[0])
-			end, errEnd := time.Parse(layotTime, strSplit[1])
+			start, errStart := time.Parse(LAUOT_TIME, strSplit[0])
+			end, errEnd := time.Parse(LAUOT_TIME, strSplit[1])
 			if errStart == nil && errEnd == nil && (end.Equal(start) || end.After(start)) {
-				fmt.Fprintln(out)
-				// fmt.Fprintln(out, end.String())
+				timeIntervals[i] = []int{int(start.Unix()), int(end.Unix())}
 			} else {
-				result = "NO"
+				result = NO
 			}
 		}
+		if result == YES {
+
+		}
+		fmt.Fprintln(out, timeIntervals)
 		fmt.Fprintln(out, result)
 	}
 	fmt.Fprintln(out)
