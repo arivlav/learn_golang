@@ -40,6 +40,7 @@ const (
 	LAYUOT_TIME = "15:04:05"
 	YES         = "YES"
 	NO          = "NO"
+	DAYSECONDS  = 86400
 )
 
 func main() {
@@ -54,7 +55,7 @@ func main() {
 		var n int
 		fmt.Fscan(in, &n)
 		result := YES
-		timeIntervals := make([][]int, n, n)
+		var day [DAYSECONDS]byte
 		for i := 0; i < n; i++ {
 			var str string
 			fmt.Fscan(in, &str)
@@ -62,20 +63,18 @@ func main() {
 			start, errStart := time.Parse(LAYUOT_TIME, strSplit[0])
 			end, errEnd := time.Parse(LAYUOT_TIME, strSplit[1])
 			if errStart == nil && errEnd == nil && (end.Equal(start) || end.After(start)) {
-				timeIntervals[i] = []int{int(start.Unix()), int(end.Unix())}
-				if i > 0 {
-					for j := i - 1; j >= 0; j-- {
-						if len(timeIntervals[j]) > 0 {
-							fmt.Fprintln(out, timeIntervals[i][0], timeIntervals[i][1], timeIntervals[j][0], timeIntervals[j][1])
-							if timeIntervals[i][0] < timeIntervals[j][1] {
-								if timeIntervals[i][1] >= timeIntervals[j][1] {
-									result = NO
-								}
-
-							} else if timeIntervals[i][0] == timeIntervals[j][1] {
-								result = NO
-							}
-						}
+				hourStart, minStart, secStart := start.Clock()
+				hourEnd, minEnd, secEnd := end.Clock()
+				startTime := hourStart*3600 + minStart*60 + secStart
+				endTime := hourEnd*3600 + minEnd*60 + secEnd
+				for j := startTime; j <= endTime; j++ {
+					if day[j] == 0 {
+						day[j] = 1
+					} else {
+						result = NO
+					}
+					if result == NO {
+						break
 					}
 				}
 			} else {
