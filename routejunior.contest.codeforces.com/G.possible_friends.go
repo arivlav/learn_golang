@@ -48,19 +48,28 @@ func main() {
 	defer out.Flush()
 
 	var countUsers, countPairs int
-	fmt.Fscanln(in, &countUsers)
+	fmt.Fscan(in, &countUsers)
 	fmt.Fscanln(in, &countPairs)
 
-	users := make([]map[int]bool, countUsers, countUsers)
-	var n int
+	users := make(map[int]map[int]bool)
 
-	for i := 0; i < countPairs; i++ {
-		users[i] = make(map[int]bool)
-		fmt.Fscan(in, &n)
-		users[i][n] = true
+	for i := 1; i <= countUsers; i++ {
+		users[i] = make(map[int]bool, MAX_POSSIBLE_FRIENDS)
 	}
 
 	for i := 0; i < countPairs; i++ {
-		fmt.Println(out, &users[i])
+		var f1, f2 int
+		fmt.Fscan(in, &f1)
+		fmt.Fscan(in, &f2)
+		users[f1][f2] = true
+		users[f2][f1] = true
+	}
+
+	for id, user := range users {
+		fmt.Fprint(out, "id: ", id)
+		for key := range user {
+			fmt.Fprint(out, key, " ")
+		}
+		fmt.Fprintln(out)
 	}
 }
