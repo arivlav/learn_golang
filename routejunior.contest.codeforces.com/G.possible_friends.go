@@ -36,6 +36,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 const (
@@ -65,11 +66,50 @@ func main() {
 		users[f2][f1] = true
 	}
 
-	for id, user := range users {
-		fmt.Fprint(out, "id: ", id)
-		for key := range user {
-			fmt.Fprint(out, key, " ")
+	fmt.Fprintln(out)
+	for i := 1; i <= countUsers; i++ {
+		possibleFriends := make(map[string]int)
+		max := 0
+		for key1 := range users[i] {
+			for key := range users[key1] {
+				_, ok := users[i][key]
+				if key != i && !ok {
+					newKey := strconv.Itoa(key)
+					_, ok := possibleFriends[newKey]
+					if !ok {
+						possibleFriends[newKey] = 1
+					} else {
+						possibleFriends[newKey]++
+					}
+					if possibleFriends[newKey] >= max {
+						max = possibleFriends[newKey]
+					}
+				}
+			}
 		}
-		fmt.Fprintln(out)
+
+		fmt.Fprintln(out, possibleFriends)
+		// if max == 0 {
+		// 	fmt.Fprintln(out, 0)
+		// } else {
+		// 	str := ""
+		// 	for key := range possibleFriends {
+		// 		if max == possibleFriends[key] {
+		// 			str += key + " "
+		// 		}
+		// 	}
+		// 	if len(str) >= 2 {
+		// 		str = str[0 : len(str)-1]
+		// 	}
+		// 	fmt.Fprintln(out, str)
+		// }
 	}
+
+	// fmt.Fprintln(out)
+	// for i := 1; i <= countUsers; i++ {
+	// 	for key := range users[i] {
+	// 		fmt.Fprintln(out, i, key, users[i][key])
+	// 	}
+	// 	fmt.Fprintln(out)
+	// }
 }
